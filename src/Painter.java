@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Stack;
 import java.awt.*;
 
 import javax.swing.AbstractAction;
@@ -36,12 +37,6 @@ public class Painter {
 	public void initialize() {
 		// TODO Auto-generated method stub
 		frame = new JFrame();
-		
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice[] gs = ge.getScreenDevices();
-		DisplayMode dm = gs[0].getDisplayMode();
-		width = dm.getWidth();
-		height = dm.getHeight();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize(dim.width, dim.height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -139,6 +134,7 @@ public class Painter {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				System.out.println("next...");
+				NextAction();
 			}
 		};
 		next.addActionListener(buttonActionNext);
@@ -147,17 +143,14 @@ public class Painter {
 
 		JButton save = new JButton("save");
 		Action buttonActionSave = new AbstractAction("save") {
-
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				System.out.println("saving...");
+				SaveAction();
 			}
 		};
+		buttonActionSave.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_ENTER);
 		save.addActionListener(buttonActionSave);
 		save.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		save.setBounds(frame.getWidth() - 150, frame.getHeight() - 150, 100, 100);
@@ -173,7 +166,7 @@ public class Painter {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				System.out.println("config...");
-				ConfigPathAction(new FileChooser());
+				ConfigPathAction(new FileChooser(),width/2,height/2);
 			}
 		};
 		Configpath.addActionListener(buttonActionconfigpath);
@@ -199,14 +192,18 @@ public class Painter {
 	}
 
 	public void SaveAction() {
-
+		Utils.CurrentCell=""+table.getSelectedRow()+","+table.getSelectedColumn();
+		Saver.writeNewConfig();
+		//System.out.println("Cell VALUE"+(String)String.valueOf(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn())));
+		Utils.writeStringToFile((String)String.valueOf(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn())), Utils.OutputWordsfilepath);
 	}
 
-	public void ConfigPathAction(JFrame frame) {
-		 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		    frame.setSize(width/2, height/2);
+	public static void  ConfigPathAction(JFrame frame,int w,int h) {
+		 	frame.setTitle("Please, Choose the file contains the words");
+		    frame.setSize(w, h);
 		    frame.setLocation(100,100);
 		    frame.setVisible(true);
+		    frame.setAlwaysOnTop(true);
 	}
 
 
@@ -231,7 +228,7 @@ static class MyKeyListener extends KeyAdapter {
 	}
 	
 }
-static class FileChooser extends JFrame {
+public static class FileChooser extends JFrame {
 	  /**
 	 * to choose the file which contains the words
 	 */
@@ -257,6 +254,9 @@ static class FileChooser extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Utils.CurrentCell="0,0";
+				// save config
+				Saver.writeNewConfig();
 				close();
 			}
 		});
@@ -282,7 +282,8 @@ static class FileChooser extends JFrame {
 	      if (rVal == JFileChooser.APPROVE_OPTION) {
 	        filename.setText(c.getSelectedFile().getName());
 	        Utils.wordsfilepath=c.getSelectedFile().getAbsolutePath();
-	        System.out.println(Utils.wordsfilepath);
+	        Utils.OutputWordsfilepath=c.getSelectedFile().getAbsolutePath()+"_output";
+	        Utils.createoutputfile();
 	        dir.setText(c.getCurrentDirectory().toString());
 	      }
 	      if (rVal == JFileChooser.CANCEL_OPTION) {
@@ -291,6 +292,6 @@ static class FileChooser extends JFrame {
 	      }
 	    }
 	  }
-
+	  
 }
 }

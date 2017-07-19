@@ -1,16 +1,12 @@
+import java.awt.EventQueue;
+
 public class ManualSelectorMain {
 
 	public static void main(String[] args) {
 		//System.out.println("Hello,World!\n This is [Manual word selector] app");
-		Utils.setOSName();
-		Utils.checkopening();
-	 /*   try {
-	    	Utils.createHiddenConfigFile();
-	    } catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
-	/*	EventQueue.invokeLater(new Runnable() {
+		Utils.init();
+
+		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					//dummy data
@@ -34,7 +30,7 @@ public class ManualSelectorMain {
 					e.printStackTrace();
 				}
 			}
-		});*/
+		});
 	}
 
 }
