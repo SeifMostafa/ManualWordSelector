@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Stack;
 
 public class Loader {
+	
     public static Stack<String>  readfileintoStack(String filepath){
         Stack<String> words = new Stack<>();
         try {
@@ -21,5 +22,5 @@ public class Loader {
         }
         return words;
     }
-
+    
 }

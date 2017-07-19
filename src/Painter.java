@@ -2,91 +2,295 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.awt.*;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class Painter {
 	public JFrame frame;
-	private JTextField textField;
+	public JTable table = null;
+	private boolean ALLOW_COLUMN_SELECTION = true;
+	private boolean ALLOW_ROW_SELECTION = true;
 	
-	public Painter() {
+	private int width,height;
+	public Painter(Object rowData[][],Object columnNames[]) {
+		loadtabledata(rowData,columnNames);
 		initialize();
 	}
-
-	private void initialize() {
+	public void loadtabledata(Object rowData[][],Object columnNames[]){
+		table = new JTable(rowData, columnNames);
+	}
+	public void initialize() {
 		// TODO Auto-generated method stub
 		frame = new JFrame();
 		
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice[] gs = ge.getScreenDevices();
 		DisplayMode dm = gs[0].getDisplayMode();
-	    int screenWidth = dm.getWidth();
-	    int screenHeight = dm.getHeight();
-	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	    frame.setSize(dim.width, dim.height);
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		width = dm.getWidth();
+		height = dm.getHeight();
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setSize(dim.width, dim.height);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		/**generate layout for words*/
-		
-		/**generate buttons */
-		//frame.addKeyListener(new MyKeyListener());
+
+		/** generate layout for words */
+		table.setBounds(10, 10, frame.getWidth() - 20, frame.getHeight()-160);
+		table.setVisible(true);
+	    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    // table.setCellSelectionEnabled(true);
+	    // table.setRowSelectionAllowed(true);
+	    // table.setColumnSelectionAllowed(true);
+	     if (ALLOW_ROW_SELECTION) { // true by default
+	       ListSelectionModel rowSM = table.getSelectionModel();
+	       rowSM.addListSelectionListener(new ListSelectionListener() {
+	         public void valueChanged(ListSelectionEvent e) {
+	           // Ignore extra messages.
+	           if (e.getValueIsAdjusting())
+	             return;
+
+	           ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+	           if (lsm.isSelectionEmpty()) {
+	             System.out.println("No rows are selected.");
+	           } else {
+	             int selectedRow = lsm.getMinSelectionIndex();
+
+	             System.out.println("Row " + selectedRow + " is now selected.");
+	           }
+	         }
+	       });
+	     } else {
+	       table.setRowSelectionAllowed(false);
+	     }
+	     table.addKeyListener(new KeyListener() {
+
+	 		
+	 		@Override
+	 		public void keyReleased(KeyEvent e) {
+	 			// TODO Auto-generated method stub
+	 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	 				// delete row method (when "delete" is pressed)
+	 				System.out.println("ENTER");
+	 				System.out.println("SR/SC:"+table.getSelectedRow()+"/"+table.getSelectedColumn());
+
+	 			}
+	 		}
+	 		@Override
+	 		public void keyTyped(KeyEvent e) {
+	 			// TODO Auto-generated method stub
+	 			
+	 		}
+	 		@Override
+	 		public void keyPressed(KeyEvent e) {
+	 			// TODO Auto-generated method stub
+	 			
+	 		}
+	 	});
+	     if (ALLOW_COLUMN_SELECTION) { // false by default
+	       if (ALLOW_ROW_SELECTION) {
+	         // We allow both row and column selection, which
+	         // implies that we *really* want to allow individual
+	         // cell selection.
+	         table.setCellSelectionEnabled(true);
+	       }
+	       table.setColumnSelectionAllowed(true);
+	       ListSelectionModel colSM = table.getColumnModel().getSelectionModel();
+	       colSM.addListSelectionListener(new ListSelectionListener() {
+	         public void valueChanged(ListSelectionEvent e) {
+	           // Ignore extra messages.
+	           if (e.getValueIsAdjusting())
+	             return;
+
+	           ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+	           if (lsm.isSelectionEmpty()) {
+	             System.out.println("No columns are selected.");
+	           } else {
+	             int selectedCol = lsm.getMinSelectionIndex();
+	             System.out.println("Column " + selectedCol + " is now selected.");
+	           }
+	         }
+	       });
+	     }
+
+		/** generate buttons */
+		// frame.addKeyListener(new MyKeyListener());
 
 		JButton next = new JButton("next");
 		Action buttonActionNext = new AbstractAction("next") {
-			 
-		    @Override
-		    public void actionPerformed(ActionEvent evt) {
-		        System.out.println("next...");
-		    }
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				System.out.println("next...");
+			}
 		};
 		next.addActionListener(buttonActionNext);
 		next.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		next.setBounds(50,frame.getHeight()-150,100,100);
+		next.setBounds(50, frame.getHeight() - 150, 100, 100);
 
 		JButton save = new JButton("save");
 		Action buttonActionSave = new AbstractAction("save") {
-			 
-		    @Override
-		    public void actionPerformed(ActionEvent evt) {
-		        System.out.println("saving...");
-		    }
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				System.out.println("saving...");
+			}
 		};
 		save.addActionListener(buttonActionSave);
 		save.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		save.setBounds(frame.getWidth()-150,frame.getHeight()-150,100,100);
-		
+		save.setBounds(frame.getWidth() - 150, frame.getHeight() - 150, 100, 100);
+
+		JButton Configpath = new JButton("Config Path");
+		Action buttonActionconfigpath = new AbstractAction("configpath") {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				System.out.println("config...");
+				ConfigPathAction(new FileChooser());
+			}
+		};
+		Configpath.addActionListener(buttonActionconfigpath);
+		Configpath.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		Configpath.setBounds(250, frame.getHeight() - 100, frame.getWidth() - 500, 50);
+
 		frame.getContentPane().add(next);
 		frame.getContentPane().add(save);
+		frame.getContentPane().add(table);
+		frame.getContentPane().add(Configpath);
 
+	}
+
+	public void setTableData(Object rowData[][], Object columnNames[]) {
+	/*	JTable newTable = new JTable(rowData, columnNames);
+
+		this.frame.getContentPane().remove(table);
+		this.frame.getContentPane().add(newTable);*/
+	}
+
+	public void NextAction() {
+
+	}
+
+	public void SaveAction() {
+
+	}
+
+	public void ConfigPathAction(JFrame frame) {
+		 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    frame.setSize(width/2, height/2);
+		    frame.setLocation(100,100);
+		    frame.setVisible(true);
+	}
+
+
+
+
+static class MyKeyListener extends KeyAdapter {
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			// delete row method (when "delete" is pressed)
+			System.out.println("ENTER");
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			// delete row method (when "delete" is released)
+			System.out.println("SPACE");
+		}
+	}
+	
+}
+static class FileChooser extends JFrame {
+	  /**
+	 * to choose the file which contains the words
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private JTextField filename = new JTextField(), dir = new JTextField();
+
+	  private JButton choose = new JButton("Choose"),ok = new JButton("OK");
+
+	  public FileChooser() {
+	    JPanel p = new JPanel();
+	    try {
+			String path = new File(".").getAbsolutePath();
+	        filename.setText(path);
+	        
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    choose.addActionListener(new ChooseL());
+	    p.add(choose);
+	    ok.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				close();
+			}
+		});
+	    p.add(ok);
+	    Container cp = getContentPane();
+	    cp.add(p, BorderLayout.SOUTH);
+	    dir.setEditable(false);
+	    filename.setEditable(false);
+	    p = new JPanel();
+	    p.setLayout(new GridLayout(2, 1));
+	    p.add(filename);
+	    p.add(dir);
+	    cp.add(p, BorderLayout.NORTH);
+	  }
+	  	private void close(){
+	    	this.dispose();
+	    }
+	  class ChooseL implements ActionListener {
+	    public void actionPerformed(ActionEvent e) {
+	      JFileChooser c = new JFileChooser();
+	      // Demonstrate "Open" dialog:
+	      int rVal = c.showOpenDialog(FileChooser.this);
+	      if (rVal == JFileChooser.APPROVE_OPTION) {
+	        filename.setText(c.getSelectedFile().getName());
+	        Utils.wordsfilepath=c.getSelectedFile().getAbsolutePath();
+	        System.out.println(Utils.wordsfilepath);
+	        dir.setText(c.getCurrentDirectory().toString());
+	      }
+	      if (rVal == JFileChooser.CANCEL_OPTION) {
+	        filename.setText("You pressed cancel");
+	        dir.setText("");
+	      }
+	    }
+	  }
 
 }
 }
-    class MyKeyListener extends KeyAdapter {
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                // delete row method (when "delete" is pressed)
-                System.out.println("ENTER");
-            }
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                // delete row method (when "delete" is released)
-                System.out.println("SPACE");
-            }
-        }
-    }
