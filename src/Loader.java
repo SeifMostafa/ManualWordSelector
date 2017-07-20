@@ -9,7 +9,8 @@ public class Loader {
 		String[][] data = null;
 		try {
 			int numberoflines = Utils.countLines(Utils.wordsfilepath);
-			System.out.println("numberoflines"+numberoflines);
+			System.out.println("numberoflines"+numberoflines+"\n"+Utils.readFileintoString(Utils.wordsfilepath));
+			
 			data = new String[numberoflines/Utils.NumberOfCols][Utils.NumberOfCols];
 			try {
 				FileReader reader = new FileReader(filepath);

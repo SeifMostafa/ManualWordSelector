@@ -170,7 +170,8 @@ public class Utils {
 				file = new File(dir + "\\" + Utils.ConfigFileName);
 			}
 			openingcheckfilepath=file.getAbsolutePath();
-			if (file.createNewFile()) {
+			//System.out.println("openingcheckfilepath"+openingcheckfilepath);
+			if(file.createNewFile()) {
 				return 1;
 			} else {
 				return 0;	
@@ -213,11 +214,7 @@ public class Utils {
 		height = dm.getHeight();
 	}
 	
-	public static void init(){
-		setOSName();
-		SetScreenWidthHeight();
-		checkopening();
-	}
+
 	
 	public static void createoutputfile(){
 		new File(Utils.OutputWordsfilepath);
@@ -234,12 +231,12 @@ public class Utils {
 					line = line.replaceAll("[!-~]", "");
 					String words[] = line.split(" ");
 					for(String word:words){
-						if(!line.equals(""))ret.push(word);
+						if(!line.equals(""))ret.push(word+"\n");
 					}
 					
 				}else{
 					line = line.replaceAll("[ -~]", "");
-					if(!line.equals(""))ret.push(line);
+					if(!line.equals(""))ret.push(line+"\n");
 				}
 			}
 			reader.close();
@@ -276,6 +273,12 @@ public class Utils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		writeStackTofile(ret, fp+"cleaned");
+		writeStackTofile(ret, wordsfilepath);
+	}
+	
+	public static void init(){
+		setOSName();
+		SetScreenWidthHeight();
+		checkopening();
 	}
 }

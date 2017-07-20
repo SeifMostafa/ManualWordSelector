@@ -236,7 +236,6 @@ public class Painter {
 				System.out.println("SPACE");
 			}
 		}
-
 	}
 
 	public static class FileChooser extends JFrame {
