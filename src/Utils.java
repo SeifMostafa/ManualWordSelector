@@ -4,12 +4,16 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.LineNumberReader;
 import java.util.Calendar;
 import java.util.Stack;
 
@@ -26,6 +30,9 @@ public class Utils {
 	public static final String Config_cell = "c";
 	public static int width;
 	public static int height;
+	public static final int NumberOfCols = 10;
+	public static boolean IsParagraph = false;
+	public static boolean firsttime = false;
 
 	public static String getTodaysDate() {
 
@@ -104,6 +111,35 @@ public class Utils {
 		}
 		return words;
 	}
+	
+	public static int countLines(String filename) throws IOException {
+	   /* InputStream is = new BufferedInputStream(new FileInputStream(filename));
+	    try {
+	        byte[] c = new byte[1024];
+	        int count = 0;
+	        int readChars = 0;
+	        boolean empty = true;
+	        while ((readChars = is.read(c)) != -1) {
+	            empty = false;
+	            for (int i = 0; i < readChars; ++i) {
+	                if (c[i] == '\n') {
+	                    ++count;
+	                }
+	            }
+	        }
+	        return (count == 0 && !empty) ? 1 : count;
+	    } finally {
+	        is.close();
+	    }*/
+		
+		LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(filename)));
+		lnr.skip(Long.MAX_VALUE);
+		int result= lnr.getLineNumber() + 1;//Add 1 because line index starts at 0
+		lnr.close();
+		return result; 
+	}
+
+
 
 	public static KeyListener enter = new KeyAdapter() {
 		@Override
@@ -144,25 +180,30 @@ public class Utils {
 		}
 		return -1;
 	}
+	
 	public static void checkopening(){
 		if(createHiddenConfigFile()==0){
 			///FILE IS EXIST
 			
 			// read from config file
 			readconfigfile(readFileintoString(openingcheckfilepath));
+			firsttime= false;
 		}else{
 			/// CREATE FILE
 			// ask to select filepath
 			Painter.ConfigPathAction(new Painter.FileChooser(),width/2,height/2);
 			// after pressing ok from there will save the content of config file
+			firsttime = true;
 		}
 	}
+	
 	public static void readconfigfile(String filecontent){
 		String[]fp_cell = filecontent.split("cell");
 		wordsfilepath = fp_cell[0].substring(3);
 		OutputWordsfilepath = wordsfilepath+"_output";
 		CurrentCell = fp_cell[1].substring(1);
 	}
+	
 	public static void SetScreenWidthHeight(){
 		
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -177,8 +218,64 @@ public class Utils {
 		SetScreenWidthHeight();
 		checkopening();
 	}
+	
 	public static void createoutputfile(){
-		File file = new File(Utils.OutputWordsfilepath);
+		new File(Utils.OutputWordsfilepath);
 	}
+	public static void cleanwordsfile(){
+		Stack<String> ret=new Stack<>();
+		try {
+			FileReader reader = new FileReader(wordsfilepath);
+			BufferedReader bufferedReader = new BufferedReader(reader);
 
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				if(IsParagraph){
+					line = line.replaceAll("[!-~]", "");
+					String words[] = line.split(" ");
+					for(String word:words){
+						if(!line.equals(""))ret.push(word);
+					}
+					
+				}else{
+					line = line.replaceAll("[ -~]", "");
+					if(!line.equals(""))ret.push(line);
+				}
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		writeStackTofile(ret, wordsfilepath);
+	}
+	public static void cleanwordsfile(String fp){
+		Stack<String> ret=new Stack<>();
+		try {
+			FileReader reader = new FileReader(fp);
+			BufferedReader bufferedReader = new BufferedReader(reader);
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				if(IsParagraph){
+					line = line.replaceAll("[!-~]", "");
+					String words[] = line.split(" ");
+					for(String word:words){
+							word = word.replaceAll("\t", "");
+							word = word.replaceAll(" ", "");
+
+							if(!line.equals(""))ret.push(word);
+					}
+					
+				}else{
+					line = line.replaceAll("[ -~]", "");
+					line = line.replaceAll("\t", "");
+
+					if(!line.equals(""))ret.push(line);
+				}
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		writeStackTofile(ret, fp+"cleaned");
+	}
 }

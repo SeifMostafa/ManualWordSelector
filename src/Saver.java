@@ -7,5 +7,7 @@ public class Saver {
 		Config_content.push("fp="+Utils.wordsfilepath);
 		Config_content.push("cell="+ Utils.CurrentCell);
 		Utils.writeStackTofile(Config_content, Utils.ConfigFileName);
+		Utils.cleanwordsfile();
+		ManualSelectorMain.ManualSelectorMainGO();
     }
 }
