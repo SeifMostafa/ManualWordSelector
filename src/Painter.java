@@ -14,11 +14,13 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -28,15 +30,17 @@ public class Painter {
 	public JTable table = null;
 	private boolean ALLOW_COLUMN_SELECTION = true;
 	private boolean ALLOW_ROW_SELECTION = true;
-
+//	public static Painter instance;
 	private int width, height;
 
 	public Painter(Object rowData[][], Object columnNames[]) {
 		loadtabledata(rowData, columnNames);
 		initialize();
+	//	instance = this;
 	}
 
 	public void loadtabledata(Object rowData[][], Object columnNames[]) {
+		System.out.println("loading data...");
 		table = new JTable(rowData, columnNames);
 	}
 
@@ -83,6 +87,7 @@ public class Painter {
 				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					// delete row method (when "delete" is pressed)
+					SaveAction();
 					System.out.println("ENTER");
 					System.out.println("SR/SC:" + table.getSelectedRow() + "/" + table.getSelectedColumn());
 
@@ -132,12 +137,8 @@ public class Painter {
 
 		JButton next = new JButton("next");
 		Action buttonActionNext = new AbstractAction("next") {
-
-			/**
-			 * 
-			 */
+			
 			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				System.out.println("next...");
@@ -159,6 +160,11 @@ public class Painter {
 			}
 		};
 		buttonActionSave.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_ENTER);
+		 
+		save.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+		        KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "save");
+		 
+		save.getActionMap().put("save", buttonActionSave);
 		save.addActionListener(buttonActionSave);
 		save.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		save.setBounds(frame.getWidth() - 150, frame.getHeight() - 150, 100, 100);
@@ -166,9 +172,6 @@ public class Painter {
 		JButton Configpath = new JButton("Config Path");
 		Action buttonActionconfigpath = new AbstractAction("configpath") {
 
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -226,9 +229,18 @@ public class Painter {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				// delete row method (when "delete" is pressed)
 				System.out.println("ENTER");
+				
 			}
 		}
-
+		public static void SaveAction(Painter p) {
+			Utils.CurrentCell = "" + p.table.getSelectedRow() + "," + p.table.getSelectedColumn();
+			Saver.writeNewConfig();
+			// System.out.println("Cell
+			// VALUE"+(String)String.valueOf(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn())));
+			Utils.writeStringToFile(
+					(String) String.valueOf(p.table.getValueAt(p.table.getSelectedRow(), p.table.getSelectedColumn())),
+					Utils.OutputWordsfilepath);
+		}
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) {

@@ -33,6 +33,7 @@ public class Loader {
 		}
 		return data;
 	}
+	
 	public Painter init(){
 		Integer[] columnNames = new Integer[Utils.NumberOfCols];
 		for (int i = 0; i < Utils.NumberOfCols; i++) {
@@ -41,4 +42,5 @@ public class Loader {
 		String data[][] = readfileinto2d(Utils.wordsfilepath);
 		return new Painter(data, columnNames);
 	}
+
 }

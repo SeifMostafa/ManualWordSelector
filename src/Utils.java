@@ -258,14 +258,11 @@ public class Utils {
 					for(String word:words){
 							word = word.replaceAll("\t", "");
 							word = word.replaceAll(" ", "");
-
 							if(!line.equals(""))ret.push(word);
 					}
-					
 				}else{
 					line = line.replaceAll("[ -~]", "");
 					line = line.replaceAll("\t", "");
-
 					if(!line.equals(""))ret.push(line);
 				}
 			}

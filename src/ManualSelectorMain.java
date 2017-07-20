@@ -12,7 +12,7 @@ public class ManualSelectorMain {
 		if (!Utils.firsttime) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					try {
+				try {
 						Loader loader = new Loader();
 						Painter window = loader.init();
 						window.frame.setVisible(true);
