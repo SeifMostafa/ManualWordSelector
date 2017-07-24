@@ -1,9 +1,11 @@
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -13,6 +15,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 
+import java.io.IOException;
+import java.util.Stack;
+import java.awt.*;
+
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -20,10 +27,15 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
+
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -51,6 +63,7 @@ public class Painter {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize(dim.width, dim.height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		frame.getContentPane().setLayout(new BorderLayout());
 
 		/** generate layout for words */
@@ -59,6 +72,13 @@ public class Painter {
 		table.setVisible(true);
 		table.setDragEnabled(true);
 		
+
+		frame.getContentPane().setLayout(null);
+
+		/** generate layout for words */
+		table.setBounds(10, 10, frame.getWidth() - 20, frame.getHeight() - 160);
+		table.setVisible(true);
+
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// table.setCellSelectionEnabled(true);
 		// table.setRowSelectionAllowed(true);
@@ -185,6 +205,7 @@ public class Painter {
 				ConfigPathAction(new FileChooser(), width / 2, height / 2);
 			}
 		};
+
 		
 		Configpath.addActionListener(buttonActionconfigpath);
 		Configpath.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -211,6 +232,16 @@ public class Painter {
 
 		
 		
+
+		Configpath.addActionListener(buttonActionconfigpath);
+		Configpath.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		Configpath.setBounds(250, frame.getHeight() - 100, frame.getWidth() - 500, 50);
+
+		frame.getContentPane().add(next);
+		frame.getContentPane().add(save);
+		frame.getContentPane().add(table);
+		frame.getContentPane().add(Configpath);
+
 
 	}
 

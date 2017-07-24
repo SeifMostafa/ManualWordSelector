@@ -114,7 +114,11 @@ public class Utils {
 	}
 	
 	public static int countLines(String filename) throws IOException {
+
 	    InputStream is = new BufferedInputStream(new FileInputStream(filename));
+
+	    InputStream is = new BufferedInputStream(new FileInputStream(filename));
+
 	    try {
 	        byte[] c = new byte[1024];
 	        int count = 0;
@@ -127,18 +131,22 @@ public class Utils {
 	                    ++count;
 	                }
 	            }
+
                 if(count>10000)break;
 
 	        }
 	        return (count == 0 && !empty) ? 1 : count;
 	    } finally {
 	        is.close();
+
 	    }
 		/*LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(filename)));
 		lnr.skip(Long.MAX_VALUE);
 		int result= lnr.getLineNumber() + 1;//Add 1 because line index starts at 0
 		lnr.close();
 		return result; */
+
+	    
 	}
 
 
@@ -184,7 +192,9 @@ public class Utils {
 		return -1;
 	}
 	
+
 	public static boolean checkopening(){
+
 		if(createHiddenConfigFile()==0){
 			///FILE IS EXIST
 			
@@ -198,6 +208,7 @@ public class Utils {
 			// after pressing ok from there will save the content of config file
 			firsttime = true;
 		}
+
 		return firsttime;
 	}
 	
@@ -295,5 +306,6 @@ public class Utils {
 				}
 			});
 		}
+
 	}
 }
