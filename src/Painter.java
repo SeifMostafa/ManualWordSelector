@@ -213,7 +213,7 @@ public class Painter {
        
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 10, frame.getWidth() - 20, frame.getHeight() - 160);
-		scrollPane.add(table);
+		//scrollPane.add(table);
 		//table.add(scrollPane);
 		
 		
@@ -223,12 +223,7 @@ public class Painter {
 		next.setLayout(new BorderLayout());
 		.setOpaque(false);
 		save.setLayout(new BorderLayout());*/
-		
-	    
-        frame.getContentPane().add(next);
-		frame.getContentPane().add(save);
-		frame.getContentPane().add(Configpath);
-		frame.getContentPane().add(scrollPane);
+
 
 		
 		
