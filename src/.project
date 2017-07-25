@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-<<<<<<< HEAD
-	<name>MWS</name>
-=======
-<<<<<<< HEAD
-	<name>MWS</name>
-=======
-	<name>ManualWordSelector</name>
->>>>>>> 3aad231eadfcb1c2e787ecbc787f7bd0ca91324a
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
+	<name>src</name>
 	<comment></comment>
 	<projects>
 	</projects>
