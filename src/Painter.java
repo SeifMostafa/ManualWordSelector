@@ -1,4 +1,3 @@
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -19,10 +18,6 @@ import java.io.IOException;
 import java.util.Stack;
 import java.awt.*;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -42,24 +37,17 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-<<<<<<< HEAD
 import javax.swing.border.LineBorder;
-=======
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
 
 public class Painter {
 	public JFrame frame;
 	public JTable table = null;
 	private boolean ALLOW_COLUMN_SELECTION = true;
 	private boolean ALLOW_ROW_SELECTION = true;
-<<<<<<< HEAD
 	public static final int btnsizeHeight = 100;
 	public static final int btnsizeWidth = 100;
 	public static final int marginWidth = 10;
 	public static final int marginHeight = 10;
-=======
-
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
 	private int width, height;
 
 	public Painter(Object rowData[][], Object columnNames[]) {
@@ -77,7 +65,6 @@ public class Painter {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize(dim.width, dim.height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-<<<<<<< HEAD
 		frame.getContentPane().setLayout(new BorderLayout());
 
 		/** generate layout for words */
@@ -87,24 +74,6 @@ public class Painter {
 
 		table.setVisible(true);
 		table.setDragEnabled(true);
-=======
-
-		frame.getContentPane().setLayout(new BorderLayout());
-
-		/** generate layout for words */
-		
-		table.setBounds(10, 10, frame.getWidth() - 20, frame.getHeight() - 160);
-		table.setVisible(true);
-		table.setDragEnabled(true);
-		
-
-		frame.getContentPane().setLayout(null);
-
-		/** generate layout for words */
-		table.setBounds(10, 10, frame.getWidth() - 20, frame.getHeight() - 160);
-		table.setVisible(true);
-
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// table.setCellSelectionEnabled(true);
 		// table.setRowSelectionAllowed(true);
@@ -139,12 +108,12 @@ public class Painter {
 					// delete row method (when "delete" is pressed)
 					System.out.println("ENTER");
 					System.out.println("SR/SC:" + table.getSelectedRow() + "/" + table.getSelectedColumn());
-
+					SaveAction();
 				}
 			}
 
 			@Override
-			public void keyTyped(KeyEvent e) {
+			public void keyTyped(KeyEvent e) 	{
 				// TODO Auto-generated method stub
 
 			}
@@ -182,19 +151,8 @@ public class Painter {
 		}
 
 		/** generate buttons */
-<<<<<<< HEAD
 		Action buttonActionNext = new AbstractAction("next") {
 
-=======
-		// frame.addKeyListener(new MyKeyListener());
-
-		JButton next = new JButton("next");
-		Action buttonActionNext = new AbstractAction("next") {
-
-			/**
-			 * 
-			 */
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -203,14 +161,6 @@ public class Painter {
 				NextAction();
 			}
 		};
-<<<<<<< HEAD
-=======
-		next.addActionListener(buttonActionNext);
-		next.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		next.setBounds(50, frame.getHeight() - 150, 100, 100);
-
-		JButton save = new JButton("save");
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
 		Action buttonActionSave = new AbstractAction("save") {
 			private static final long serialVersionUID = 1L;
 
@@ -221,21 +171,8 @@ public class Painter {
 			}
 		};
 		buttonActionSave.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_ENTER);
-<<<<<<< HEAD
 		Action buttonActionconfigpath = new AbstractAction("configpath") {
 
-=======
-		save.addActionListener(buttonActionSave);
-		save.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		save.setBounds(frame.getWidth() - 150, frame.getHeight() - 150, 100, 100);
-
-		JButton Configpath = new JButton("Config Path");
-		Action buttonActionconfigpath = new AbstractAction("configpath") {
-
-			/**
-			 * 
-			 */
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -244,7 +181,6 @@ public class Painter {
 				ConfigPathAction(new FileChooser(), width / 2, height / 2);
 			}
 		};
-<<<<<<< HEAD
 		JScrollPane jScrollPane = new JScrollPane();
 		jScrollPane.setBounds(marginWidth, marginHeight, frame.getWidth()-2*marginWidth, frame.getHeight()-btnsizeHeight-2*marginHeight);
 		jScrollPane.setViewportView(table);
@@ -255,7 +191,6 @@ public class Painter {
 		panel_btns.setBounds(marginWidth,(frame.getHeight() - btnsizeHeight-(2*marginHeight)), frame.getWidth()-(2*marginWidth), btnsizeHeight+(2*marginHeight));
 
 		JButton Configpath = new JButton("Config Path");
-		panel_btns.add(Configpath);
 
 		Configpath.addActionListener(buttonActionconfigpath);
 		Configpath.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -263,53 +198,21 @@ public class Painter {
 		// frame.addKeyListener(new MyKeyListener());
 
 		JButton next = new JButton("next");
-		panel_btns.add(next);
 		next.addActionListener(buttonActionNext);
 		next.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		next.setBounds(marginWidth, frame.getHeight() - 2*marginHeight-btnsizeWidth, btnsizeWidth, btnsizeHeight);
 
 		JButton save = new JButton("save");
-		panel_btns.add(save);
 		save.addActionListener(buttonActionSave);
 		save.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		save.setBounds(frame.getWidth() - btnsizeWidth-marginWidth, frame.getHeight() - 2*marginHeight-btnsizeWidth, btnsizeWidth, btnsizeHeight);
 		
+		panel_btns.add(next);
+		panel_btns.add(Configpath);
+		panel_btns.add(save);
+
 		frame.getContentPane().add(jScrollPane);
 		frame.getContentPane().add(panel_btns, BorderLayout.SOUTH);
-=======
-
-		
-		Configpath.addActionListener(buttonActionconfigpath);
-		Configpath.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		Configpath.setBounds(250, frame.getHeight() - 100, frame.getWidth() - 500, 50);
-       
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 10, frame.getWidth() - 20, frame.getHeight() - 160);
-		//scrollPane.add(table);
-		//table.add(scrollPane);
-		
-		
-	/*	Configpath.setOpaque(false);
-		Configpath.setLayout(new BorderLayout());
-		.setOpaque(false);
-		next.setLayout(new BorderLayout());
-		.setOpaque(false);
-		save.setLayout(new BorderLayout());*/
-
-
-		
-		
-
-		Configpath.addActionListener(buttonActionconfigpath);
-		Configpath.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		Configpath.setBounds(250, frame.getHeight() - 100, frame.getWidth() - 500, 50);
-
-		frame.getContentPane().add(next);
-		frame.getContentPane().add(save);
-		frame.getContentPane().add(table);
-		frame.getContentPane().add(Configpath);
-
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
 
 	}
 
@@ -327,12 +230,23 @@ public class Painter {
 	}
 
 	public void SaveAction() {
-		Utils.CurrentCell = "" + table.getSelectedRow() + "," + table.getSelectedColumn();
+		int x=0,y=table.getSelectedColumn();
+		if(table.getSelectedRow() !=0&&table.getSelectedColumn()!=0){
+			x=table.getSelectedRow()-1;
+		}else if((table.getSelectedRow() !=0&&table.getSelectedColumn()==0)||(table.getSelectedRow() ==0&&table.getSelectedColumn()!=0)){
+			if((table.getSelectedRow() !=0&&table.getSelectedColumn()==0)){
+				x=table.getSelectedRow()-1;
+			}else{
+				x=table.getSelectedRow();
+			}
+		}
+		
+		Utils.CurrentCell = "" +  x+ "," +y ;
 		Saver.writeNewConfig();
 		// System.out.println("Cell
 		// VALUE"+(String)String.valueOf(table.getValueAt(table.getSelectedRow(),table.getSelectedColumn())));
 		Utils.writeStringToFile(
-				(String) String.valueOf(table.getValueAt(table.getSelectedRow(), table.getSelectedColumn())),
+				(String) String.valueOf(table.getValueAt(x,y)),
 				Utils.OutputWordsfilepath);
 	}
 
@@ -350,7 +264,7 @@ public class Painter {
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				// delete row method (when "delete" is pressed)
-				System.out.println("ENTER");
+				System.out.println("ENTER	");
 			}
 		}
 
@@ -392,11 +306,11 @@ public class Painter {
 					Utils.CurrentCell = "0,0";
 					// save config
 					Saver.writeNewConfig();
+					Utils.loadwindow();
 					close();
 				}
 			});
 			chkparagrapgh.addItemListener(new ItemListener() {
-<<<<<<< HEAD
 
 				@Override
 				public void itemStateChanged(ItemEvent e) {
@@ -404,13 +318,6 @@ public class Painter {
 						Utils.IsParagraph = true;
 					else
 						Utils.IsParagraph = false;
-=======
-				
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					if(e.getStateChange() == 1 ) Utils.IsParagraph=true;
-					else Utils.IsParagraph= false;
->>>>>>> 035b15375f58744b6e510cbb567c6ecc02acf13d
 				}
 			});
 			p.add(ok);

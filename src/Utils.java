@@ -292,18 +292,21 @@ public class Utils {
 		setOSName();
 		SetScreenWidthHeight();
 		if(!checkopening()) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						Loader loader = new Loader();
-						Painter window = loader.init();
-						window.frame.setVisible(true);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
+			loadwindow();
 		}
 
+	}
+	public static void loadwindow(){
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Loader loader = new Loader();
+					Painter window = loader.init();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }

@@ -11,8 +11,7 @@ public class Loader {
 		String[][] data = null;
 		try {
 
-			long  numberoflines = Utils.countLines(Utils.wordsfilepath);
-			
+			long  numberoflines = Utils.countLines(Utils.wordsfilepath);	
 			System.out.println("numberoflines"+numberoflines+"\n");
 			if(numberoflines>1000){
 				numberoflines=1000;

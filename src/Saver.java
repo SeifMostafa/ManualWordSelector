@@ -9,10 +9,6 @@ public class Saver {
 		Utils.writeStackTofile(Config_content, Utils.ConfigFileName);
 
 		Utils.cleanwordsfile();
-		ManualSelectorMain.ManualSelectorMainGO();
-
-		Utils.cleanwordsfile();
-		ManualSelectorMain.ManualSelectorMainGO();
-
+		
     }
 }
