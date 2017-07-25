@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Stack;
 import java.awt.*;
 
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -39,13 +38,17 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.border.LineBorder;
 
 public class Painter {
 	public JFrame frame;
 	public JTable table = null;
 	private boolean ALLOW_COLUMN_SELECTION = true;
 	private boolean ALLOW_ROW_SELECTION = true;
-
+	public static final int btnsizeHeight = 100;
+	public static final int btnsizeWidth = 100;
+	public static final int marginWidth = 10;
+	public static final int marginHeight = 10;
 	private int width, height;
 
 	public Painter(Object rowData[][], Object columnNames[]) {
@@ -63,22 +66,15 @@ public class Painter {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize(dim.width, dim.height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		frame.getContentPane().setLayout(new BorderLayout());
 
 		/** generate layout for words */
-		
-		table.setBounds(10, 10, frame.getWidth() - 20, frame.getHeight() - 160);
+
+		table.setBounds(marginWidth, marginHeight, (frame.getWidth() - marginHeight - marginWidth), (frame.getHeight() - btnsizeHeight-(3*marginWidth)));
+		table.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+
 		table.setVisible(true);
 		table.setDragEnabled(true);
-		
-
-		frame.getContentPane().setLayout(null);
-
-		/** generate layout for words */
-		table.setBounds(10, 10, frame.getWidth() - 20, frame.getHeight() - 160);
-		table.setVisible(true);
-
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// table.setCellSelectionEnabled(true);
 		// table.setRowSelectionAllowed(true);
@@ -156,14 +152,8 @@ public class Painter {
 		}
 
 		/** generate buttons */
-		// frame.addKeyListener(new MyKeyListener());
-
-		JButton next = new JButton("next");
 		Action buttonActionNext = new AbstractAction("next") {
 
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -172,11 +162,6 @@ public class Painter {
 				NextAction();
 			}
 		};
-		next.addActionListener(buttonActionNext);
-		next.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		next.setBounds(50, frame.getHeight() - 150, 100, 100);
-
-		JButton save = new JButton("save");
 		Action buttonActionSave = new AbstractAction("save") {
 			private static final long serialVersionUID = 1L;
 
@@ -187,16 +172,8 @@ public class Painter {
 			}
 		};
 		buttonActionSave.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_ENTER);
-		save.addActionListener(buttonActionSave);
-		save.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		save.setBounds(frame.getWidth() - 150, frame.getHeight() - 150, 100, 100);
-
-		JButton Configpath = new JButton("Config Path");
 		Action buttonActionconfigpath = new AbstractAction("configpath") {
 
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -205,48 +182,37 @@ public class Painter {
 				ConfigPathAction(new FileChooser(), width / 2, height / 2);
 			}
 		};
+		JScrollPane jScrollPane = new JScrollPane();
+		jScrollPane.setBounds(marginWidth, marginHeight, frame.getWidth()-2*marginWidth, frame.getHeight()-btnsizeHeight-2*marginHeight);
+		jScrollPane.setViewportView(table);
 
-		
+		JPanel panel_btns = new JPanel();
+		panel_btns.setBackground(Color.ORANGE);
+		panel_btns.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		panel_btns.setBounds(marginWidth,(frame.getHeight() - btnsizeHeight-(2*marginHeight)), frame.getWidth()-(2*marginWidth), btnsizeHeight+(2*marginHeight));
+
+		JButton Configpath = new JButton("Config Path");
+		panel_btns.add(Configpath);
+
 		Configpath.addActionListener(buttonActionconfigpath);
 		Configpath.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		Configpath.setBounds(250, frame.getHeight() - 100, frame.getWidth() - 500, 50);
-       
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 10, frame.getWidth() - 20, frame.getHeight() - 160);
-		scrollPane.add(table);
-		//table.add(scrollPane);
-		
-		
-	/*	Configpath.setOpaque(false);
-		Configpath.setLayout(new BorderLayout());
-		.setOpaque(false);
-		next.setLayout(new BorderLayout());
-		.setOpaque(false);
-		save.setLayout(new BorderLayout());*/
+		Configpath.setBounds(marginWidth+btnsizeWidth+marginWidth, frame.getHeight() - btnsizeHeight - 2*marginHeight, frame.getWidth() - 2*btnsizeWidth - 2*marginWidth, btnsizeHeight);
+		// frame.addKeyListener(new MyKeyListener());
 
+		JButton next = new JButton("next");
+		panel_btns.add(next);
+		next.addActionListener(buttonActionNext);
+		next.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		next.setBounds(marginWidth, frame.getHeight() - 2*marginHeight-btnsizeWidth, btnsizeWidth, btnsizeHeight);
 
+		JButton save = new JButton("save");
+		panel_btns.add(save);
+		save.addActionListener(buttonActionSave);
+		save.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		save.setBounds(frame.getWidth() - btnsizeWidth-marginWidth, frame.getHeight() - 2*marginHeight-btnsizeWidth, btnsizeWidth, btnsizeHeight);
 		
-		
-		JPanel jPanel = new JPanel();
-		//jPanel.setLayout(new BorderLayout());
-	
-		scrollPane.add(Configpath);
-		scrollPane.add(next);
-		scrollPane.add(save);
-
-		
-		Configpath.addActionListener(buttonActionconfigpath);
-		Configpath.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		Configpath.setBounds(250, frame.getHeight() - 100, frame.getWidth() - 500, 50);
-
-		/*frame.getContentPane().add(next);
-		frame.getContentPane().add(save);
-		frame.getContentPane().add(table);
-		frame.getContentPane().add(Configpath);*/
-		
-		frame.add(scrollPane);
-		//frame.add(jPanel);
-
+		frame.getContentPane().add(jScrollPane);
+		frame.getContentPane().add(panel_btns, BorderLayout.SOUTH);
 
 	}
 
@@ -333,11 +299,13 @@ public class Painter {
 				}
 			});
 			chkparagrapgh.addItemListener(new ItemListener() {
-				
+
 				@Override
 				public void itemStateChanged(ItemEvent e) {
-					if(e.getStateChange() == 1 ) Utils.IsParagraph=true;
-					else Utils.IsParagraph= false;
+					if (e.getStateChange() == 1)
+						Utils.IsParagraph = true;
+					else
+						Utils.IsParagraph = false;
 				}
 			});
 			p.add(ok);
