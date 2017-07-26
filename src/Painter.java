@@ -11,7 +11,6 @@ import java.awt.*;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
 import javax.swing.Action;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -28,13 +27,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumn;
 import javax.swing.border.LineBorder;
 
 public class Painter {
 	public JFrame frame;
 	public JTable table = null;
 	public JScrollPane jScrollPane;
+	public JButton next, save, Configpath;
 	private boolean ALLOW_COLUMN_SELECTION = true;
 	private boolean ALLOW_ROW_SELECTION = true;
 	public static final int btnsizeHeight = 100;
@@ -48,32 +47,41 @@ public class Painter {
 	private int width, height;
 
 	public Painter(Object rowData[][], Object columnNames[]) {
+		next = new JButton("next");
+		save = new JButton("save");
+		Configpath = new JButton("Config Path");
+		
+		frame = new JFrame();
+
 		loadtabledata(rowData, columnNames);
 		initialize();
 	}
 
 	public void loadtabledata(Object rowData[][], Object columnNames[]) {
 		table = new JTable(rowData, columnNames);
-		
+		table.setVisible(false);
 		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.RIGHT );
-		
+		centerRenderer.setHorizontalAlignment(JLabel.RIGHT);
+
 		for (int i = 0; i < table.getColumnCount(); i++) {
-			table.getColumnModel().getColumn(i).setCellRenderer( centerRenderer );
-			//col.setCellEditor(new MyTableCellEditor());
+			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+			// col.setCellEditor(new MyTableCellEditor());
 		}
 		table.setFont(new Font(FontName, FontStyle, FontSize));
+		table.setVisible(true);
 	}
 
 	public void initialize() {
-		frame = new JFrame();
+		//frame.setVisible(false);
 		jScrollPane = new JScrollPane();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize(dim.width, dim.height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout());
-
+		next.setVisible(true);
+		save.setVisible(true);
+		Configpath.setVisible(true);
 		/** generate layout for words */
 
 		table.setBounds(marginWidth, marginHeight, (frame.getWidth() - marginHeight - marginWidth),
@@ -81,7 +89,7 @@ public class Painter {
 		table.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 
 		table.setVisible(true);
-	//	table.setDragEnabled(true);
+		// table.setDragEnabled(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// table.setCellSelectionEnabled(true);
 		// table.setRowSelectionAllowed(true);
@@ -194,7 +202,7 @@ public class Painter {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				System.out.println("config...");
-				ConfigPathAction(new FileChooser(), width / 2, height / 2);
+				ConfigPathAction();
 			}
 		};
 
@@ -208,8 +216,6 @@ public class Painter {
 		panel_btns.setBounds(marginWidth, (frame.getHeight() - btnsizeHeight - (2 * marginHeight)),
 				frame.getWidth() - (2 * marginWidth), btnsizeHeight + (2 * marginHeight));
 
-		JButton Configpath = new JButton("Config Path");
-
 		Configpath.addActionListener(buttonActionconfigpath);
 		Configpath.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		Configpath.setBounds(marginWidth + btnsizeWidth + marginWidth,
@@ -217,12 +223,10 @@ public class Painter {
 				frame.getWidth() - 2 * btnsizeWidth - 2 * marginWidth, btnsizeHeight);
 		// frame.addKeyListener(new MyKeyListener());
 
-		JButton next = new JButton("next");
 		next.addActionListener(buttonActionNext);
 		next.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		next.setBounds(marginWidth, frame.getHeight() - 2 * marginHeight - btnsizeWidth, btnsizeWidth, btnsizeHeight);
 
-		JButton save = new JButton("save");
 		save.addActionListener(buttonActionSave);
 		save.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		save.setBounds(frame.getWidth() - btnsizeWidth - marginWidth,
@@ -234,20 +238,18 @@ public class Painter {
 
 		frame.getContentPane().add(jScrollPane);
 		frame.getContentPane().add(panel_btns, BorderLayout.SOUTH);
+		//frame.setVisible(true);
 
 	}
 
-	public void setTableData(Object rowData[][], Object columnNames[]) {
-		/*
-		 * JTable newTable = new JTable(rowData, columnNames);
-		 * 
-		 * this.frame.getContentPane().remove(table);
-		 * this.frame.getContentPane().add(newTable);
-		 */
-	}
+	
+	
 
 	public void NextAction() {
-
+		Utils.countloads++;
+		// load after countload*maXloadforeach
+		this.frame.dispose();
+		Utils.loadwindow(true);
 	}
 
 	public void SaveAction(int x, int y) {
@@ -259,12 +261,8 @@ public class Painter {
 		Utils.writeStringToFile((String) String.valueOf(table.getValueAt(x, y)), Utils.OutputWordsfilepath);
 	}
 
-	public static void ConfigPathAction(JFrame frame, int w, int h) {
-		frame.setTitle("Please, Choose the file contains the words");
-		frame.setSize(w, h);
-		frame.setLocation(100, 100);
-		frame.setVisible(true);
-		frame.setAlwaysOnTop(true);
+	public static void ConfigPathAction() {
+		JFrame choosepath = new FileChooser();
 	}
 
 	static class MyKeyListener extends KeyAdapter {
@@ -297,6 +295,8 @@ public class Painter {
 		private JButton choose = new JButton("Choose"), ok = new JButton("OK");
 
 		public FileChooser() {
+			setTitle("Please, Choose the file contains the words");
+			setBounds(100, 100, Utils.width / 2 , Utils.height / 2 );
 			JPanel p = new JPanel();
 			try {
 				String path = new File(".").getAbsolutePath();
@@ -319,7 +319,7 @@ public class Painter {
 						Utils.CurrentCell = "0,0";
 						// save config
 						Saver.writeNewConfig();
-						Utils.loadwindow();
+						Utils.loadwindow(false);
 					}
 
 					close();
@@ -346,6 +346,8 @@ public class Painter {
 			p.add(dir);
 			p.add(chkparagrapgh);
 			cp.add(p, BorderLayout.NORTH);
+			setAlwaysOnTop(true);
+			setVisible(true);
 		}
 
 		private void close() {
@@ -376,19 +378,22 @@ public class Painter {
 		}
 
 	}
-	 public static class MyTableCellEditor extends AbstractCellEditor implements TableCellEditor {
-		    JComponent component = new JTextField();
-		    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex, int vColIndex) {
-		        ((JTextField)component).setText((String)value);
-		        ((JTextField)component).setFont(new java.awt.Font("Arial Unicode MS", 0, 25));
-		        return component;
-		    }
-			@Override
-			public Object getCellEditorValue() {
-		        ((JTextField)component).setFont(new java.awt.Font("Arial Unicode MS", 0, 25));
-				return component;
-			}
+
+	public static class MyTableCellEditor extends AbstractCellEditor implements TableCellEditor {
+		JComponent component = new JTextField();
+
+		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex,
+				int vColIndex) {
+			((JTextField) component).setText((String) value);
+			((JTextField) component).setFont(new java.awt.Font("Arial Unicode MS", 0, 25));
+			return component;
 		}
 
-}
+		@Override
+		public Object getCellEditorValue() {
+			((JTextField) component).setFont(new java.awt.Font("Arial Unicode MS", 0, 25));
+			return component;
+		}
+	}
 
+}
