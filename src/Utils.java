@@ -14,24 +14,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-<<<<<<< HEAD
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.stream.Stream;
-=======
-import java.io.LineNumberReader;
-import java.util.Calendar;
-import java.util.Stack;
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 
 import javax.swing.JButton;
 
 public class Utils {
 	public static String wordsfilepath = "";
-<<<<<<< HEAD
 	public static String OutputWordsfilepath = "";
 	public static String openingcheckfilepath = "";
 	public static String OSNAME = "";
@@ -50,20 +43,6 @@ public class Utils {
 	public static boolean IsParagraph = false;
 	public static boolean firsttime = false;
 	public static boolean biggerThan10K = false;
-=======
-	public static String OutputWordsfilepath= "";
-	public static String openingcheckfilepath = "";
-	public static String OSNAME = "";
-	public static String CurrentCell = "";
-	public static final String ConfigFileName = ".Config"; // '.' to make file hidden
-	public static final String Config_filepath = "fp";
-	public static final String Config_cell = "c";
-	public static int width;
-	public static int height;
-	public static final int NumberOfCols = 10;
-	public static boolean IsParagraph = false;
-	public static boolean firsttime = false;
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 
 	public static String getTodaysDate() {
 
@@ -80,11 +59,7 @@ public class Utils {
 			FileWriter writer = new FileWriter(filepath, true);
 			BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
-<<<<<<< HEAD
 			bufferedWriter.write(data + "\n");
-=======
-			bufferedWriter.write(data+"\n");
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 			bufferedWriter.close();
 
 		} catch (IOException e) {
@@ -146,7 +121,6 @@ public class Utils {
 		}
 		return words;
 	}
-<<<<<<< HEAD
 
 	public static int countLines(String filename, int afterlines) throws IOException {
 
@@ -197,44 +171,6 @@ public class Utils {
 		 */
 
 	}
-=======
-	
-	public static int countLines(String filename) throws IOException {
-
-	    InputStream is = new BufferedInputStream(new FileInputStream(filename));
-
-	    try {
-	        byte[] c = new byte[1024];
-	        int count = 0;
-	        int readChars = 0;
-	        boolean empty = true;
-	        while ((readChars = is.read(c)) != -1) {
-	            empty = false;
-	            for (int i = 0; i < readChars; ++i) {
-	                if (c[i] == '\n') {
-	                    ++count;
-	                }
-	            }
-
-                if(count>10000)break;
-
-	        }
-	        return (count == 0 && !empty) ? 1 : count;
-	    } finally {
-	        is.close();
-
-	    }
-		/*LineNumberReader  lnr = new LineNumberReader(new FileReader(new File(filename)));
-		lnr.skip(Long.MAX_VALUE);
-		int result= lnr.getLineNumber() + 1;//Add 1 because line index starts at 0
-		lnr.close();
-		return result; */
-
-	    
-	}
-
-
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 
 	public static KeyListener enter = new KeyAdapter() {
 		@Override
@@ -264,28 +200,18 @@ public class Utils {
 			} else {
 				file = new File(dir + "\\" + Utils.ConfigFileName);
 			}
-<<<<<<< HEAD
 			openingcheckfilepath = file.getAbsolutePath();
 			// System.out.println("openingcheckfilepath"+openingcheckfilepath);
 			if (file.createNewFile()) {
 				return 1;
 			} else {
 				return 0;
-=======
-			openingcheckfilepath=file.getAbsolutePath();
-			//System.out.println("openingcheckfilepath"+openingcheckfilepath);
-			if(file.createNewFile()) {
-				return 1;
-			} else {
-				return 0;	
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return -1;
 	}
-<<<<<<< HEAD
 
 	public static int RemoveHiddenConfigFile() {
 		try {
@@ -322,29 +248,12 @@ public class Utils {
 			/// CREATE FILE
 			// ask to select filepath
 			Painter.ConfigPathAction();
-=======
-	
-
-	public static boolean checkopening(){
-
-		if(createHiddenConfigFile()==0){
-			///FILE IS EXIST
-			
-			// read from config file
-			readconfigfile(readFileintoString(openingcheckfilepath));
-			firsttime= false;
-		}else{
-			/// CREATE FILE
-			// ask to select filepath
-			Painter.ConfigPathAction(new Painter.FileChooser(),width/2,height/2);
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 			// after pressing ok from there will save the content of config file
 			firsttime = true;
 		}
 
 		return firsttime;
 	}
-<<<<<<< HEAD
 
 	public static void readconfigfile(String filecontent) {
 		String[] fp_cell = filecontent.split("cell");
@@ -360,25 +269,12 @@ public class Utils {
 
 	public static void SetScreenWidthHeight() {
 
-=======
-	
-	public static void readconfigfile(String filecontent){
-		String[]fp_cell = filecontent.split("cell");
-		wordsfilepath = fp_cell[0].substring(3);
-		OutputWordsfilepath = wordsfilepath+"_output";
-		CurrentCell = fp_cell[1].substring(1);
-	}
-	
-	public static void SetScreenWidthHeight(){
-		
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice[] gs = ge.getScreenDevices();
 		DisplayMode dm = gs[0].getDisplayMode();
 		width = dm.getWidth();
 		height = dm.getHeight();
 	}
-<<<<<<< HEAD
 
 	public static void createoutputfile() {
 		new File(Utils.OutputWordsfilepath);
@@ -386,23 +282,12 @@ public class Utils {
 
 	public static void cleanwordsfile() {
 		Stack<String> ret = new Stack<>();
-=======
-	
-
-	
-	public static void createoutputfile(){
-		new File(Utils.OutputWordsfilepath);
-	}
-	public static void cleanwordsfile(){
-		Stack<String> ret=new Stack<>();
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 		try {
 			FileReader reader = new FileReader(wordsfilepath);
 			BufferedReader bufferedReader = new BufferedReader(reader);
 
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
-<<<<<<< HEAD
 				if (IsParagraph) {
 					line = line.replaceAll("[!-~]", "");
 					String words[] = line.split(" ");
@@ -415,18 +300,6 @@ public class Utils {
 					line = line.replaceAll("[ -~]", "");
 					if (!line.equals(""))
 						ret.push(line + "\n");
-=======
-				if(IsParagraph){
-					line = line.replaceAll("[!-~]", "");
-					String words[] = line.split(" ");
-					for(String word:words){
-						if(!line.equals(""))ret.push(word+"\n");
-					}
-					
-				}else{
-					line = line.replaceAll("[ -~]", "");
-					if(!line.equals(""))ret.push(line+"\n");
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 				}
 			}
 			reader.close();
@@ -435,20 +308,14 @@ public class Utils {
 		}
 		writeStackTofile(ret, wordsfilepath);
 	}
-<<<<<<< HEAD
 
 	public static void cleanwordsfile(String fp) {
 		Stack<String> ret = new Stack<>();
-=======
-	public static void cleanwordsfile(String fp){
-		Stack<String> ret=new Stack<>();
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 		try {
 			FileReader reader = new FileReader(fp);
 			BufferedReader bufferedReader = new BufferedReader(reader);
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
-<<<<<<< HEAD
 				if (IsParagraph) {
 					line = line.replaceAll("[!-~]", "");
 					String words[] = line.split(" ");
@@ -466,23 +333,6 @@ public class Utils {
 
 					if (!line.equals(""))
 						ret.push(line);
-=======
-				if(IsParagraph){
-					line = line.replaceAll("[!-~]", "");
-					String words[] = line.split(" ");
-					for(String word:words){
-							word = word.replaceAll("\t", "");
-							word = word.replaceAll(" ", "");
-
-							if(!line.equals(""))ret.push(word);
-					}
-					
-				}else{
-					line = line.replaceAll("[ -~]", "");
-					line = line.replaceAll("\t", "");
-
-					if(!line.equals(""))ret.push(line);
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 				}
 			}
 			reader.close();
@@ -491,7 +341,6 @@ public class Utils {
 		}
 		writeStackTofile(ret, wordsfilepath);
 	}
-<<<<<<< HEAD
 
 	public static void init() {
 		setOSName();
@@ -503,23 +352,10 @@ public class Utils {
 	}
 
 	public static void loadwindow(boolean fromNext) {
-=======
-	
-	public static void init(){
-		setOSName();
-		SetScreenWidthHeight();
-		if(!checkopening()) {
-			loadwindow();
-		}
-
-	}
-	public static void loadwindow(){
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Loader loader = new Loader();
-<<<<<<< HEAD
 					Painter window = loader.init(fromNext);
 
 					// Next visibility
@@ -541,10 +377,6 @@ public class Utils {
 						window.jScrollPane.getVerticalScrollBar().setValue(r * NumberOfCols);
 
 					}
-=======
-					Painter window = loader.init();
-					window.frame.setVisible(true);
->>>>>>> fefdac7007cca3a22bea6443e0f0ba06f6b22210
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
