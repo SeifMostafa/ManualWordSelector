@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.LineNumberReader;
 import java.util.Calendar;
 import java.util.Stack;
 
@@ -236,6 +235,7 @@ public class Utils {
 		wordsfilepath = fp_cell[0].substring(3);
 		OutputWordsfilepath = wordsfilepath+"_output";
 		CurrentCell = fp_cell[1].substring(1);
+		System.out.println(CurrentCell);
 	}
 	
 	public static void SetScreenWidthHeight(){
@@ -324,6 +324,12 @@ public class Utils {
 					Loader loader = new Loader();
 					Painter window = loader.init();
 					window.frame.setVisible(true);
+					String rc[]=Utils.CurrentCell.split(",");
+					int r=Integer.parseInt(rc[0]),c=Integer.parseInt(rc[1]);
+					
+					window.table.setRowSelectionInterval(r,r);
+					window.table.setColumnSelectionInterval(c, c);
+					window.jScrollPane.getVerticalScrollBar().setValue(r*NumberOfCols);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

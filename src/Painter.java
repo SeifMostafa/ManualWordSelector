@@ -1,10 +1,3 @@
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -13,41 +6,45 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
-
-import java.io.IOException;
-import java.util.Stack;
 import java.awt.*;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractCellEditor;
 import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JViewport;
-
-import javax.swing.JTable;
-import javax.swing.JTextField;
-
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 import javax.swing.border.LineBorder;
 
 public class Painter {
 	public JFrame frame;
 	public JTable table = null;
+	public JScrollPane jScrollPane;
 	private boolean ALLOW_COLUMN_SELECTION = true;
 	private boolean ALLOW_ROW_SELECTION = true;
 	public static final int btnsizeHeight = 100;
 	public static final int btnsizeWidth = 100;
 	public static final int marginWidth = 10;
 	public static final int marginHeight = 10;
+	public static final String FontName = "Arial";
+	public static final int FontStyle = Font.PLAIN;
+	public static final int FontSize = 14;
+
 	private int width, height;
 
 	public Painter(Object rowData[][], Object columnNames[]) {
@@ -57,11 +54,21 @@ public class Painter {
 
 	public void loadtabledata(Object rowData[][], Object columnNames[]) {
 		table = new JTable(rowData, columnNames);
+		
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.RIGHT );
+		
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			table.getColumnModel().getColumn(i).setCellRenderer( centerRenderer );
+			//col.setCellEditor(new MyTableCellEditor());
+		}
+		table.setFont(new Font(FontName, FontStyle, FontSize));
 	}
 
 	public void initialize() {
-		// TODO Auto-generated method stub
 		frame = new JFrame();
+		jScrollPane = new JScrollPane();
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize(dim.width, dim.height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,7 +81,7 @@ public class Painter {
 		table.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 
 		table.setVisible(true);
-		table.setDragEnabled(true);
+	//	table.setDragEnabled(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		// table.setCellSelectionEnabled(true);
 		// table.setRowSelectionAllowed(true);
@@ -104,7 +111,6 @@ public class Painter {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					// delete row method (when "delete" is pressed)
 					System.out.println("ENTER");
@@ -126,13 +132,11 @@ public class Painter {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -193,7 +197,7 @@ public class Painter {
 				ConfigPathAction(new FileChooser(), width / 2, height / 2);
 			}
 		};
-		JScrollPane jScrollPane = new JScrollPane();
+
 		jScrollPane.setBounds(marginWidth, marginHeight, frame.getWidth() - 2 * marginWidth,
 				frame.getHeight() - btnsizeHeight - 2 * marginHeight);
 		jScrollPane.setViewportView(table);
@@ -299,7 +303,6 @@ public class Painter {
 				filename.setText(path);
 
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			choose.addActionListener(new ChooseL());
@@ -373,4 +376,19 @@ public class Painter {
 		}
 
 	}
+	 public static class MyTableCellEditor extends AbstractCellEditor implements TableCellEditor {
+		    JComponent component = new JTextField();
+		    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex, int vColIndex) {
+		        ((JTextField)component).setText((String)value);
+		        ((JTextField)component).setFont(new java.awt.Font("Arial Unicode MS", 0, 25));
+		        return component;
+		    }
+			@Override
+			public Object getCellEditorValue() {
+		        ((JTextField)component).setFont(new java.awt.Font("Arial Unicode MS", 0, 25));
+				return component;
+			}
+		}
+
 }
+
