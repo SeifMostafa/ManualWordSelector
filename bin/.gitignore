@@ -1,4 +1,6 @@
-/Painter$MyTableCellEditor.class
+/Draw.class
+/Loader.class
+/ManualSelectorMain.class
 /Painter$1.class
 /Painter$2.class
 /Painter$3.class
@@ -7,4 +9,16 @@
 /Painter$6.class
 /Painter$FileChooser$1.class
 /Painter$FileChooser$2.class
+/Painter$FileChooser$ChooseL.class
+/Painter$FileChooser.class
+/Painter$MyKeyListener.class
+/Painter.class
+/Saver.class
+/Utils$1.class
 /Utils$2.class
+/Utils.class
+/Painter$MyTableCellEditor.class
+/.Config
+/.classpath
+/.gitignore
+/.project
